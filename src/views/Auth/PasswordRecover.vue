@@ -7,35 +7,16 @@
     <q-card class="glass-card q-pa-lg text-white" style="width: 450px; max-width: 95%;">
 
       <div class="glass-avatar-container q-mb-md">
-        <q-icon name="person_add" size="70px" class="glass-avatar" />
+        <q-icon name="key" size="70px" class="glass-avatar" />
       </div>
 
       <q-card-section class="text-center q-pt-none q-mt-xl"> 
-        <div class="text-h5 text-weight-bold q-mb-xs" style="color: white;">Crear Cuenta</div>
-        <div class="text-subtitle1 text-grey-4">Regístrate para usar el Inventario de Aula</div>
+        <div class="text-h5 text-weight-bold q-mb-xs" style="color: white;">¿Olvidaste tu contraseña?</div>
+        <div class="text-subtitle1 text-grey-4">Ingresa tu correo para recibir un enlace de recuperación.</div>
       </q-card-section>
 
       <q-card-section>
-        <q-form @submit="handleRegister" class="q-gutter-md">
-          
-          <q-input
-            v-model="name"
-            dark
-            filled
-            bg-color="rgba(255, 255, 255, 0.1)"
-            input-class="text-white"
-            label-color="grey-4"
-            type="text"
-            label="Nombre Completo"
-            clearable
-            :rules="[
-              val => (val && val.length > 0) || 'El nombre es requerido'
-            ]"
-          >
-            <template v-slot:prepend>
-              <q-icon name="person" color="white" />
-            </template>
-          </q-input>
+        <q-form @submit="handlePasswordRecover" class="q-gutter-md">
           
           <q-input
             v-model="email"
@@ -49,7 +30,7 @@
             clearable
             :rules="[
               val => (val && val.length > 0) || 'El email es requerido',
-              val => /.+@.+\..+/.test(val) || 'Ingresa un email válido'
+              val => /.+@.+\..+/.test(val) || 'Ingresa un email válido' 
             ]"
           >
             <template v-slot:prepend>
@@ -57,48 +38,8 @@
             </template>
           </q-input>
 
-          <q-input
-            v-model="password"
-            dark
-            filled
-            bg-color="rgba(255, 255, 255, 0.1)"
-            input-class="text-white"
-            label-color="grey-4"
-            type="password"
-            label="Contraseña (mín. 6 caracteres)"
-            clearable
-            :rules="[
-              val => (val && val.length > 0) || 'La contraseña es requerida',
-              val => val.length >= 6 || 'Mínimo 6 caracteres'
-            ]"
-          >
-            <template v-slot:prepend>
-              <q-icon name="lock" color="white" />
-            </template>
-          </q-input>
-          
-          <q-input
-            v-model="passwordConfirm"
-            dark
-            filled
-            bg-color="rgba(255, 255, 255, 0.1)"
-            input-class="text-white"
-            label-color="grey-4"
-            type="password"
-            label="Confirmar Contraseña"
-            clearable
-            :rules="[
-              val => (val && val.length > 0) || 'Confirma la contraseña',
-              val => val === password || 'Las contraseñas no coinciden' // <-- VALIDACIÓN CRUCIAL
-            ]"
-          >
-            <template v-slot:prepend>
-              <q-icon name="lock_reset" color="white" />
-            </template>
-          </q-input>
-
           <q-btn
-            label="REGISTRARME"
+            label="ENVIAR ENLACE"
             type="submit"
             color="primary"
             text-color="black"
@@ -109,8 +50,8 @@
             :disable="loading"
           >
             <template v-slot:loading>
-              <q-spinner-tail class="on-left" color="black" />
-              Procesando...
+              <q-spinner-radio class="on-left" color="black" />
+              Enviando...
             </template>
           </q-btn>
 
@@ -119,8 +60,7 @@
 
       <q-card-section class="text-center q-pt-lg">
         <p class="text-grey-4 text-body2">
-          ¿Ya tienes cuenta? 
-          <router-link to="/" class="text-primary text-weight-medium">Inicia Sesión</router-link>
+          <router-link to="/" class="text-primary text-weight-medium">Volver a Iniciar Sesión</router-link>
         </p>
       </q-card-section>
 
@@ -134,52 +74,49 @@ import { useRouter } from 'vue-router';
 import { useQuasar } from 'quasar';
 import axios from 'axios'; 
 
-const name = ref('');
 const email = ref('');
-const password = ref('');
-const passwordConfirm = ref('');
 const loading = ref(false);
 
 const router = useRouter();
 const $q = useQuasar();
 
-const handleRegister = async () => {
+const handlePasswordRecover = async () => {
     loading.value = true;
 
     try {
         // SIMULACIÓN DE LLAMADA A API (2 segundos de retraso)
         await new Promise(resolve => setTimeout(resolve, 2000)); 
         
-        // Simulación de respuesta exitosa
-        const isSuccess = Math.random() > 0.1; 
+        // Simulación de respuesta exitosa (siempre asumimos que fue exitoso para no dar pistas al atacante)
+        const isSuccess = Math.random() > 0.05; // 95% éxito
 
         if (isSuccess) {
-            // NOTIFICACIÓN DE ÉXITO Y SIMULACIÓN DE CORREO
+            
             $q.notify({
                 type: 'positive',
-                message: 'Registro exitoso. Se ha enviado un correo de confirmación a tu email.',
+                message: 'Si el correo existe, hemos enviado un enlace de recuperación. Revisa tu bandeja de entrada.',
                 position: 'top',
                 icon: 'mark_email_read',
-                timeout: 5000 
+                timeout: 6000 
             });
             
             // Redirigir al Login para que el usuario pueda intentar acceder
             setTimeout(() => {
                  router.push('/');
-            }, 1000);
+            }, 1500);
            
         } else {
-            // Simulación de un error (ej. "correo ya registrado")
-            throw new Error('El correo electrónico ya se encuentra registrado. Intenta iniciar sesión.');
+            // Simulación de error de servidor
+            throw new Error('Error de servidor. Intenta de nuevo más tarde.');
         }
 
     } catch (error) {
         // NOTIFICACIÓN DE ERROR
-        const errorMessage = error.message || 'Error desconocido al intentar registrar el usuario.';
+        const errorMessage = error.message || 'Error desconocido al intentar enviar el correo.';
         
         $q.notify({
             type: 'negative',
-            message: `Fallo en el Registro: ${errorMessage}`,
+            message: `Fallo al recuperar: ${errorMessage}`,
             position: 'top',
             icon: 'warning'
         });
@@ -191,7 +128,7 @@ const handleRegister = async () => {
 </script>
 
 <style scoped>
-/* Copiamos los estilos Glassmorphism de Login.vue */
+/* Copiamos los estilos Glassmorphism de Login.vue/Register.vue */
 .glass-card {
   position: relative; 
   background: rgba(255, 255, 255, 0.1); 

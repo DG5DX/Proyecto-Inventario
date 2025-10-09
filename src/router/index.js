@@ -1,62 +1,35 @@
-// src/router/index.js
+// src/router/index.js (Solo la estructura principal)
 
 import { createRouter, createWebHistory } from 'vue-router';
-// Importa tus futuras vistas
 import Login from '../views/Auth/Login.vue'; 
 import Register from '../views/Auth/Register.vue';
 import Dashboard from '../views/Dashboard.vue';
-import ItemList from '../views/ItemList.vue';
-import AdminPanel from '../views/AdminPanel.vue';
+import PasswordRecover from '../views/Auth/PasswordRecover.vue';
 
-// Función para verificar si hay un token de usuario (simulación de auth)
+// Función de chequeo de autenticación simulada (temporal)
 const isAuthenticated = () => {
-    // En un proyecto real:
-    // return localStorage.getItem('token') !== null;
-    return true; // Temporalmente para desarrollo
+    return localStorage.getItem('token') !== null;
 };
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
-    {
-      path: '/',
-      name: 'login',
-      component: Login,
-    },
-    {
-      path: '/register',
-      name: 'register',
-      component: Register,
-    },
+    // Rutas de autenticación: ahora van directo al componente
+    { path: '/', name: 'login', component: Login },
+    { path: '/register', name: 'register', component: Register },
+    { path: '/passwordrecover', name: 'recover', component: PasswordRecover},
+    
     // Rutas protegidas
-    {
-      path: '/dashboard',
-      name: 'dashboard',
-      component: Dashboard,
-      meta: { requiresAuth: true }, // Etiqueta esta ruta como protegida
-    },
-    {
-      path: '/items',
-      name: 'items',
-      component: ItemList,
-      meta: { requiresAuth: true },
-    },
-    {
-        path: '/admin',
-        name: 'admin',
-        component: AdminPanel,
-        meta: { requiresAuth: true, requiresAdmin: true }, // Requiere ser admin
-      },
+    { path: '/dashboard', name: 'dashboard', component: Dashboard, meta: { requiresAuth: true } },
+    
   ],
 });
 
-// Guardia de navegación global (middleware de frontend)
+// Guardia de navegación para rutas protegidas
 router.beforeEach((to, from, next) => {
     if (to.meta.requiresAuth && !isAuthenticated()) {
-        // Si la ruta requiere autenticación y el usuario NO está logueado, redirige a login
         next('/');
     } else {
-        // Si no hay restricciones o el usuario está logueado, continúa
         next();
     }
 });

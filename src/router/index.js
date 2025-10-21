@@ -7,11 +7,16 @@ import PasswordRecover from '../views/Auth/PasswordRecover.vue';
 
 // Componentes del Layout y Vistas
 import MainLayout from '../views/MainLayout.vue';
-import DashboardZonas from '../views/DashboardZonas.vue';
-import DashboardAulas from '../views/DashboardAulas.vue';
-import DashboardItems from '../views/DashboardItems.vue';
-import AdminPanel from '../views/AdminPanel.vue'
-import ItemDetail from '../views/ItemDetail.vue';
+import DashboardZonas from '../views/User/DashboardZonas.vue';
+import DashboardAulas from '../views/User/DashboardAulas.vue';
+import DashboardItems from '../views/User/DashboardItems.vue';
+import DashboardPrestamos from '../views/User/DashboardPrestamos.vue';
+import AdminSolicitudes from '../views/Admin/AdminSolicitudes.vue';
+import AdminPrestamos from '../views/Admin/AdminPrestamos.vue';
+import AdminZonas from '../views/Admin/AdminGestionZonas.vue';
+import AdminAulas from '../views/Admin/AdminGestionAulas.vue';
+import AdminItems from '../views/Admin/AdminGestionItems.vue';
+import ItemDetail from '../views/User/ItemDetail.vue';
 
 // Función de chequeo de autenticación simulada (temporal)
 const isAuthenticated = () => {
@@ -37,11 +42,17 @@ const router = createRouter({
                     // El path será /dashboard, ya que se une con el path padre '/'
                     path: 'dashboard', 
                     name: 'dashboard', 
-                    component: DashboardZonas, // Usando el nombre correcto según tu estructura
+                    component: DashboardZonas,
                     meta: { requiresAuth: true } 
                 },
+
+                {
+                    path: '/prestamos',
+                    name: 'dashboard-prestamos',
+                    component: DashboardPrestamos,
+                    meta: { requiresAuth: true }    
+                },
                 
-                // Nuevas rutas basadas en tu estructura de archivos y flujo de negocio:
 
                 // Catálogo: Aulas dentro de una Zona
                 { 
@@ -69,9 +80,34 @@ const router = createRouter({
 
                 // Panel de Administrador (Vista de Admin)
                 { 
-                    path: 'admin', 
-                    name: 'admin-panel', 
-                    component: AdminPanel, 
+                    path: 'adminsolicitudes', 
+                    name: 'admin-solicitudes', 
+                    component: AdminSolicitudes, 
+                    meta: { requiresAuth: true, requiresAdmin: true } // Asumimos que esta es solo para Admin
+                },
+                { 
+                    path: 'adminprestamos', 
+                    name: 'admin-prestamos', 
+                    component: AdminPrestamos, 
+                    meta: { requiresAuth: true, requiresAdmin: true } // Asumimos que esta es solo para Admin
+                },
+                // Panel de gestion
+                { 
+                    path: 'admingestion', 
+                    name: 'admin-gestion', 
+                    component: AdminZonas, 
+                    meta: { requiresAuth: true, requiresAdmin: true } // Asumimos que esta es solo para Admin
+                },
+                { 
+                    path: 'admingestion/aulas/:zoneId', 
+                    name: 'admin-aulas', 
+                    component: AdminAulas, 
+                    meta: { requiresAuth: true, requiresAdmin: true } // Asumimos que esta es solo para Admin
+                },
+                { 
+                    path: 'admingestion/items/:zoneId/:classroomId', 
+                    name: 'admin-items', 
+                    component: AdminItems, 
                     meta: { requiresAuth: true, requiresAdmin: true } // Asumimos que esta es solo para Admin
                 },
             ]

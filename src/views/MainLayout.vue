@@ -50,7 +50,7 @@
       <q-list dark>
 
         <template v-if="!isAdmin">
-          <q-item-label header class="text-primary text-weight-bold">USUARIO COMÚN</q-item-label>
+          <q-item-label header class="text-primary text-weight-bold">USUARIO</q-item-label>
           <q-item clickable v-ripple exact to="/dashboard">
             <q-item-section avatar><q-icon name="view_module" color="primary" /></q-item-section>
             <q-item-section>Catálogo por Zonas</q-item-section>
@@ -63,21 +63,17 @@
 
         <template v-else>
           <q-item-label header class="text-primary text-weight-bold">ADMINISTRACIÓN</q-item-label>
-          <q-item clickable v-ripple exact to="/admin/solicitudes">
+          <q-item clickable v-ripple exact to="/adminsolicitudes">
             <q-item-section avatar><q-icon name="notifications" color="primary" /></q-item-section>
             <q-item-section>Solicitudes Pendientes</q-item-section>
           </q-item>
-          <q-item clickable v-ripple exact to="/admin/movimientos">
+          <q-item clickable v-ripple exact to="/adminprestamos">
             <q-item-section avatar><q-icon name="swap_horiz" color="primary" /></q-item-section>
             <q-item-section>Préstamos Activos</q-item-section>
           </q-item>
-          <q-item clickable v-ripple exact to="/admin/inventario">
+          <q-item clickable v-ripple exact to="/admingestion">
             <q-item-section avatar><q-icon name="inventory_2" color="primary" /></q-item-section>
-            <q-item-section>Gestión de Ítems</q-item-section>
-          </q-item>
-          <q-item clickable v-ripple exact to="/admin/configuracion">
-            <q-item-section avatar><q-icon name="settings" color="primary" /></q-item-section>
-            <q-item-section>Aulas y Categorías</q-item-section>
+            <q-item-section>Gestión</q-item-section>
           </q-item>
         </template>
         <q-separator dark class="q-mt-sm" />
@@ -107,7 +103,7 @@ const leftDrawerOpen = ref(false);
 const userData = ref({
   name: 'Usuario Común',
   email: 'Usuario@soy.sena.edu',
-  role: 'usuario' // Cambiar a 'admin' para probar la vista de administrador
+  role: 'admin' // Cambiar a 'admin' o 'usuario' para probar la vista de administrador o usuario
 });
 
 const isAdmin = computed(() => userData.value.role === 'admin');

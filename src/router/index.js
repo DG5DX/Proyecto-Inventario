@@ -13,9 +13,9 @@ import DashboardItems from '../views/User/DashboardItems.vue';
 import DashboardPrestamos from '../views/User/DashboardPrestamos.vue';
 import AdminSolicitudes from '../views/Admin/AdminSolicitudes.vue';
 import AdminPrestamos from '../views/Admin/AdminPrestamos.vue';
-import AdminZonas from '../views/Admin/AdminGestionZonas.vue';
-import AdminAulas from '../views/Admin/AdminGestionAulas.vue';
-import AdminItems from '../views/Admin/AdminGestionItems.vue';
+import AdminZonas from '../views/Admin/GestionZonas.vue';
+import AdminAulas from '../views/Admin/GestionAulas.vue';
+import AdminItems from '../views/Admin/GestionItems.vue';
 import ItemDetail from '../views/User/ItemDetail.vue';
 
 // Función de chequeo de autenticación simulada (temporal)
@@ -108,7 +108,7 @@ const router = createRouter({
                     path: 'admingestion/items/:zoneId/:classroomId', 
                     name: 'admin-items', 
                     component: AdminItems, 
-                    meta: { requiresAuth: true, requiresAdmin: true } // Asumimos que esta es solo para Admin
+                    meta: { requiresAuth: true, requiresAdmin: true } 
                 },
             ]
         },
